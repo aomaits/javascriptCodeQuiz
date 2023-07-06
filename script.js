@@ -11,8 +11,15 @@ function Quiz() {
 
     })
 }
+    var finalScore = 0;
 
     function runQuiz () {
+        calculateFinalScore ();
+        function calculateFinalScore () {
+            finalScore = 1;
+            // rewrite this function to tally up the points
+        }
+
         firstQuestion();
         function firstQuestion () {
             var question1 = document.createElement("h2");
@@ -36,11 +43,40 @@ function Quiz() {
 
             question1.setAttribute("style", "display:flex; justify-content:center; flex-direction:column");
             answerList1.setAttribute("style", "disply:block");
+
+            answerList3.addEventListener("click", correctResponse);
+            // still need to write the below function incorrect response
+            // answerList1.addEventListener("click", incorrectResponse);
+            // answerList2.addEventListener("click", incorrectResponse);
+            // answerList4.addEventListener("click", incorrectResponse);
+
+            function correctResponse () {
+                loadScoreScreen();
+                function loadScoreScreen () {
+                    // console.log(timeLeft);
+                    question1.setAttribute("style", "display:none");
+                    var finalScorePageHeader = document.createElement("h2");
+                    var finalScoreGreeting = document.createElement("p");
+                    var finalScoreEntry = document.createElement("form");
+
+                    finalScorePageHeader.textContent = "Great Work!"
+                    finalScoreGreeting.textContent = "Your final score is " + finalScore;
+
+                    // All done! Your final score is ___ (variable)
+                    // Please enter your initials
+                    // YOU WERE HERE! ADD IN FINAL TWO SCREENS! (final score entry and high scores- separate html)
+                    timeLeft = 0;
+                    // can be adjusted here? Or needs to pulled out of other function?
+
+                }
+                // load next question/final score screen
+                // add 5 points to total
+            }
         }
 
     countdownTimer();
     function countdownTimer () {
-        var timeLeft = 76;
+        var timeLeft = 21;
         var countdown = document.querySelector("#countdown");
         
         var timeInterval = setInterval(function (){
@@ -61,8 +97,7 @@ function Quiz() {
 }
 
 
-// start with a basic screen that asks if the user wants to take the coding quiz (5,6, and 7 talk about js coding over html)
-// timer starts, housed in the upper right-hand corner of the screen. (9 and 10 are about timers) The timer is tied to the answers- if you answer incorrectly, you are docked x seconds (i-x, most likely?)
+//  The timer is tied to the answers- if you answer incorrectly, you are docked x seconds (i-x, most likely?)
 // add link to "view high scores" in the upper left-hand corner of the screen- this will need an event listener to know when it's clicked, two buttons once it shows up on the screen to allow you to go back. This has to hold the initials and the high scores until a user clears the high  -(21 and 22 at least, we're looking to store those in localstorage in the browsercd ). maybe use the example from 11 to click to and from this screen? 
 // the quiz itself is a series of questions, has to event listen to see if the correct question answer was selected. Can use keydown and keyup to listen for the correct answer number (16), or listen for a mouse click (12) and assign the changes to the element using dot notation...  Using buttons of numbered lists? 
 // when the timer reaches zero, it should show the score of the user and a chance for the user to enter their initials (see 13, 14 & 15 for the form entry)
