@@ -1,15 +1,61 @@
 
 var beginButton = document.querySelector("#beginButton");
 var startPage = document.querySelector("#startPage");
+var scoresLink = document.querySelector("#scoresLink");
+
+var question3 = document.createElement("h2")
+
+var totalCorrect = 0;
+var timeLeft = 31;
 
 Quiz();
 
 function Quiz() {
+    scoresLink.setAttribute("style", "display:none");
+    
     beginButton.addEventListener("click", function(){
         startPage.style.display = "none";
         runQuiz();
-
     })
+
+    function loadScoreScreen () {
+        // stops the clock and hides it
+    timeRemains = false;
+    countdown.setAttribute("style", "display:none");
+    // hides the second question screen
+    question3.setAttribute("style", "display:none");
+    
+    var finalScorePageHeader = document.createElement("h2");
+    var finalScoreGreeting = document.createElement("p");
+    var finalScoreEntry = document.createElement("input");
+    var finalScoreButton = document.createElement("button");
+
+    calculateFinalScore ();
+
+    function calculateFinalScore () {  
+        finalScore = totalCorrect + (Math.floor((timeLeft/5)));
+        console.log(timeLeft);
+
+        localStorage.setItem("High Score", JSON.stringify(finalScore));
+
+        finalScorePageHeader.textContent = "Your final score is " + finalScore;
+        finalScoreGreeting.textContent = "Enter your initials below and click submit:";
+        finalScoreButton.textContent = "SUBMIT";
+
+        finalScoreButton.setAttribute("type", "button");
+
+        body.appendChild(finalScorePageHeader);
+        finalScorePageHeader.appendChild(finalScoreGreeting);
+        finalScorePageHeader.appendChild(finalScoreEntry);
+        finalScorePageHeader.appendChild(finalScoreButton);
+
+        function storeUserDetails() {
+            localStorage.setItem("User Initials", JSON.stringify(finalScoreEntry.value));
+            scoresLink.setAttribute("style", "display:block");
+        }
+        finalScoreButton.addEventListener("click", storeUserDetails);
+    }
+    }
 
     // change this value to false to stop the clock
     var timeRemains=true;  
@@ -26,19 +72,17 @@ function Quiz() {
                         clearInterval(timeInterval);
                         countdown.textContent = " ";
                         countdown.setAttribute("style", "color:red");
+                        loadScoreScreen();
                     }
                 }
                 
             }, 1000);
         }
-        // var question1 = null;
-        // var body = null;
-        
-        var timeLeft = 31;
             
         questions();
         function questions () {
             countdownTimer();
+
             question1 = document.createElement("h2")
             var answerList1 = document.createElement ("button")
             var answerList2 = document.createElement ("button")
@@ -79,9 +123,8 @@ function Quiz() {
             answerList2.addEventListener("click", incorrectResponse);
             answerList4.addEventListener("click", incorrectResponse);
             
-
         function secondQuestion () {
-                // hides the question and its answers
+            // hides the previous question and its answers
             question1.setAttribute("style", "display:none");
 
             var question2 = document.createElement("h2")
@@ -93,7 +136,7 @@ function Quiz() {
             question2.textContent = "JavaScript uses two equals signs ( == ) to signify value equality. Three equals signs ( === ) in JavaScript signifies what?";
             secondAnswerList1.textContent = "the HTML and CSS are the same";
             secondAnswerList2.textContent = "a value of true at the child element";
-            secondAnswerList3.textContent = "value equality at the parent element";
+            secondAnswerList3.textContent = "we can finally live at peace with one another";
             secondAnswerList4.textContent = "value equality and data type equality";
 
             body.appendChild(question2);
@@ -105,65 +148,63 @@ function Quiz() {
             question2.setAttribute("style", "display:flex; justify-content:center; flex-direction:column");
             secondAnswerList1.setAttribute("style", "disply:block");
 
-            function secondCorrectResponse() {
-                    totalCorrect = totalCorrect + 1;
-                    loadScoreScreen();
-            }
-
-            function secondIncorrectResponse() {
-                    totalCorrect = totalCorrect - 1;
-                    timeLeft = timeLeft - 10;
-                    loadScoreScreen();
-            }
-
             secondAnswerList4.addEventListener("click", secondCorrectResponse);
             secondAnswerList2.addEventListener("click", secondIncorrectResponse);
             secondAnswerList3.addEventListener("click", secondIncorrectResponse);
             secondAnswerList1.addEventListener("click", secondIncorrectResponse);
-    
-            function loadScoreScreen () {
-                    // stops the clock and hides it
-                timeRemains = false;
-                countdown.setAttribute("style", "display:none");
-                // hides the second question screen
-                question2.setAttribute("style", "display:none");
-                
-                var finalScorePageHeader = document.createElement("h2");
-                var finalScoreGreeting = document.createElement("p");
-                var finalScoreEntry = document.createElement("input");
-                var finalScoreButton = document.createElement("button");
-    
-                calculateFinalScore ();
-    
-                function calculateFinalScore () {  
-                    finalScore = totalCorrect + (Math.floor((timeLeft/5)));
-    
-                    localStorage.setItem("High Score", JSON.stringify(finalScore));
-    
-                    finalScorePageHeader.textContent = "Your final score is " + finalScore;
-                    finalScoreGreeting.textContent = "Enter your initials below:";
-                    finalScoreButton.textContent = "SUBMIT";
-    
-                    finalScoreButton.setAttribute("type", "button");
-        
-                    body.appendChild(finalScorePageHeader);
-                    finalScorePageHeader.appendChild(finalScoreGreeting);
-                    finalScorePageHeader.appendChild(finalScoreEntry);
-                    finalScorePageHeader.appendChild(finalScoreButton);
-    
-                    function storeUserDetails(event) {
-                        event.preventDefault();
-                        localStorage.setItem("User Initials", JSON.stringify(finalScoreEntry.value));
-                    }
-                    finalScoreButton.addEventListener("click", storeUserDetails);
-                    }
-                }
+
+            function secondCorrectResponse (){
+                totalCorrect = totalCorrect + 1;
+                thirdQuestion();
             }
+
+            function secondIncorrectResponse (){
+                totalCorrect = totalCorrect - 1;
+                timeLeft = timeLeft - 10;
+                thirdQuestion();
+            }
+
+        function thirdQuestion() {
+            question2.setAttribute("style", "display:none");
+
+            
+            var thirdAnswerList1 = document.createElement ("button")
+            var thirdAnswerList2 = document.createElement ("button")
+            var thirdAnswerList3 = document.createElement ("button")
+            var thirdAnswerList4 = document.createElement ("button")
+
+            question3.textContent = "The pipe symbol ( || ) can be used to evaluate two expressions in Javascript. It is used to check if...";
+            thirdAnswerList1.textContent = "either of the two expressions is true";
+            thirdAnswerList2.textContent = "both of the expressions are false";
+            thirdAnswerList3.textContent = "one of the expressions has a data type of string";
+            thirdAnswerList4.textContent = "punk rock is actually dead";
+
+            body.appendChild(question3);
+            question3.appendChild(thirdAnswerList1);
+            question3.appendChild(thirdAnswerList2);
+            question3.appendChild(thirdAnswerList3);
+            question3.appendChild(thirdAnswerList4);
+
+            question3.setAttribute("style", "display:flex; justify-content:center; flex-direction:column");
+            thirdAnswerList1.setAttribute("style", "disply:block");
+
+            thirdAnswerList1.addEventListener("click", thirdCorrectResponse);
+            thirdAnswerList4.addEventListener("click", thirdIncorrectResponse);
+            thirdAnswerList2.addEventListener("click", thirdIncorrectResponse);
+            thirdAnswerList3.addEventListener("click", thirdIncorrectResponse);
+        
+            function thirdCorrectResponse (){
+                totalCorrect = totalCorrect + 1;
+                loadScoreScreen();
+            }
+
+            function thirdIncorrectResponse (){
+                totalCorrect = totalCorrect - 1;
+                timeLeft = timeLeft - 10;
+                loadScoreScreen();
+            }
+        }
+        }
         }
     }   
 }
-
-        // TO DO LIST: 
-        // IT'S NOT KEEPING SCORE CORRECTLY! 
-        // have to add another couple questions
-        // have to link to the scores page (at least from the final page)
