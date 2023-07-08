@@ -3,6 +3,10 @@ var beginButton = document.querySelector("#beginButton");
 var startPage = document.querySelector("#startPage");
 var scoresLink = document.querySelector("#scoresLink");
 
+
+// Create these as global variables so that I can hide whichever is active when time runs out
+var question1 = document.createElement("h2")
+var question2 = document.createElement("h2")
 var question3 = document.createElement("h2")
 
 var totalCorrect = 0;
@@ -22,7 +26,9 @@ function Quiz() {
         // stops the clock and hides it
     timeRemains = false;
     countdown.setAttribute("style", "display:none");
-    // hides the second question screen
+    // hides the question screens
+    question1.setAttribute("style", "display:none");
+    question2.setAttribute("style", "display:none");
     question3.setAttribute("style", "display:none");
     
     var finalScorePageHeader = document.createElement("h2");
@@ -34,7 +40,6 @@ function Quiz() {
 
     function calculateFinalScore () {  
         finalScore = totalCorrect + (Math.floor((timeLeft/5)));
-        console.log(timeLeft);
 
         localStorage.setItem("High Score", JSON.stringify(finalScore));
 
@@ -49,6 +54,7 @@ function Quiz() {
         finalScorePageHeader.appendChild(finalScoreEntry);
         finalScorePageHeader.appendChild(finalScoreButton);
 
+        // I would have liked to add multiple scores here- I think I would have needed to create multiple keys and used a series of "if" statements to determine if the previous keys already had values...
         function storeUserDetails() {
             localStorage.setItem("User Initials", JSON.stringify(finalScoreEntry.value));
             scoresLink.setAttribute("style", "display:block");
@@ -83,7 +89,6 @@ function Quiz() {
         function questions () {
             countdownTimer();
 
-            question1 = document.createElement("h2")
             var answerList1 = document.createElement ("button")
             var answerList2 = document.createElement ("button")
             var answerList3 = document.createElement ("button")
@@ -127,7 +132,6 @@ function Quiz() {
             // hides the previous question and its answers
             question1.setAttribute("style", "display:none");
 
-            var question2 = document.createElement("h2")
             var secondAnswerList1 = document.createElement ("button")
             var secondAnswerList2 = document.createElement ("button")
             var secondAnswerList3 = document.createElement ("button")
@@ -166,7 +170,6 @@ function Quiz() {
 
         function thirdQuestion() {
             question2.setAttribute("style", "display:none");
-
             
             var thirdAnswerList1 = document.createElement ("button")
             var thirdAnswerList2 = document.createElement ("button")
